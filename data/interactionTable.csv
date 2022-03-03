@@ -1,0 +1,15 @@
+StateName,PNGFilename,ClickableName,NextState
+Splash,assets/start.png,Next,Description
+Description,assets/description.png,Next,MeetThePlayers
+MeetThePlayers,assets/meet_the_players.png,Next,Anxious
+Anxious,assets/anxious.png,Next,Confused
+Confused,assets/confused.png,Next,Hangry
+Hangry,assets/hangry.png,Next,Happy
+Happy,assets/happy.png,Next,Jealous
+Jealous,assets/jealous.png,Next,Lovey
+Lovey,assets/lovey.png,Next,Sad
+Sad,assets/sad.png,Next,Silly
+Silly,assets/silly.png,Next,Sleepy
+Sleepy,assets/sleepy.png,Next,Surprised
+Surprised,assets/surprised.png,Next,Unsure
+Unsure,assets/unsure.png,Next,Calm
