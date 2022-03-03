@@ -73,6 +73,7 @@ function Clickable() {
 	this.textFont = "sans-serif";	//Font for the text shown
 	this.textScaled = false;     //Scale the text with the size of the clickable
 	this.drawImageOnly = false;		// set to true if we want just the PNG
+	this.noFill = false;
 	
 	// image options
 	this.image = null; // image object from p5loadimage()
@@ -163,7 +164,11 @@ function Clickable() {
 		push();
 
 		if( !this.drawImageOnly ) {
-			fill(this.color);
+			if (this.noFill) {
+				noFill();
+			} else {
+				fill(this.color);
+			}
 			stroke(this.stroke);
 			strokeWeight(this.strokeWeight);
 			rect(this.x, this.y, this.width, this.height, this.cornerRadius);

@@ -26,6 +26,10 @@ var textColor = '#E9D6EC';
 
 var buttonFont;
 
+var playerNames = [];
+var playerDescriptions = [];
+var playerIndex = 0;
+
 function preload() {
   clickablesManager = new ClickableManager('data/clickableLayout.csv');
   complexStateMachine = new ComplexStateMachine("data/interactionTable.csv", "data/clickableLayout.csv");
@@ -47,6 +51,7 @@ function setup() {
   // call OUR function to setup additional information about the p5.clickables
   // that are not in the array 
   setupClickables(); 
+  addPlayers();
  }
 
 
@@ -80,8 +85,13 @@ clickableButtonHover = function () {
 // color a light gray if off
 clickableButtonOnOutside = function () {
   // backto our gray color
-  this.color = "#eaeaea";
-  this.textColor = "#707070"
+  this.noFill = true;
+  if (currentStateName === "Splash") {
+    this.textColor = "#707070";
+  } else {
+    this.textColor = "#EAEAEA";
+  }
+  
 }
 
 clickableButtonPressed = function() {
@@ -125,7 +135,11 @@ function drawOther() {
    // Draw mood — if not on Splash or Instructions screen  
   if( currentStateName == "Splash") {
     drawSplash();  
-  }
+  } else if (currentStateName == "Description") {
+    drawDescription();
+  } else if (currentStateName == "MeetThePlayers") {
+    drawPlayers();
+  } 
 
   pop();
 }
@@ -134,9 +148,21 @@ function drawSplash() {
   console.log("drawSplash()");
 }
 
-function drawIntro() {
-  console.log("drawSplash()");
+function drawDescription() {
+  console.log("drawDescription()");
+  writeTextInBox("Rescue Aid Drones:\nDrones designed to help in the recovery of people from any dangerous situations that require immediate evacuation/rescue. The purpose of these drones is not to rescue the person itself, but rather to assist a rescue operation so that it can go as smoothly as possible.")
+}
 
+function addPlayers() {
+  // write player data to arrs
+  playerNames = ["RADtech CEO", "Mayor of LA", "Martha (Retired Schoolteacher)", "Fire Chief", "Mike (Construction Worker)"];
+  playerDescriptions.push("This is the brilliant young woman who designed and manufactures these Rescue Aid Drones (hence the name RADtech). She wants to help people with her invention, but she is mainly focused on making money to fund her many other business ventures.");
+}
+
+function drawPlayers() {
+  console.log("meet the players");
+  let stringBuf = playerNames[playerIndex] + ":\n" + playerDescriptions[playerIndex];
+  writeTextInBox(stringBuf);
 }
 
 function drawChoice() {
@@ -150,4 +176,13 @@ function drawExit() {
 //-- right now, it is just the clickables
 function drawUI() {
   clickablesManager.draw();
+}
+
+function writeTextInBox(stringBuf) {
+  push();
+  fill("#EAEAEA");
+  textSize(32);
+  textFont("Helvetica");
+  text(stringBuf, 430, 300, 800, 400);
+  pop();
 }
