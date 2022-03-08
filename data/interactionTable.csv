@@ -1,4 +1,5 @@
 StateName,PNGFilename,ClickableName,NextState
 Splash,assets/start.png,Next,Description
-Description,assets/description.png,Next,MeetThePlayers
-MeetThePlayers,assets/meet_the_players.png,Next,
+Description,assets/tech_spech.png,Next,MeetThePlayers
+MeetThePlayers,assets/meet_the_players.png,Next,Instructions
+Instructions, assets/instructions.png,Start,

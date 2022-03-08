@@ -1,0 +1,8 @@
+ID,Name,PNGFilename,Text,x,y,visible
+0,CEO,assets/player_icons/ceo_unselected.png,,48,81, yes
+1,Mayor,assets/player_icons/mayor_unselected.png,,48,212, yes
+2,Martha,assets/player_icons/martha_unselected.png,,48,344, yes
+3,Chief,assets/player_icons/chief_unselected.png,,48,475, yes
+4,Mike,assets/player_icons/mike_unselected.png,,48,607, yes
+
+

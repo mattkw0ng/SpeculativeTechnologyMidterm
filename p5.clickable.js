@@ -73,8 +73,11 @@ function Clickable() {
 	this.textFont = "sans-serif";	//Font for the text shown
 	this.textScaled = false;     //Scale the text with the size of the clickable
 	this.drawImageOnly = false;		// set to true if we want just the PNG
-	this.noFill = false;
 	
+	//Added options
+	this.noFill = false;
+	this.weird = false;
+
 	// image options
 	this.image = null; // image object from p5loadimage()
 	this.tint = null; // tint image using color
@@ -134,11 +137,21 @@ function Clickable() {
 
 		// resize if flag has been triggered & image != 1
 		if( this.resizeImageFlag && this.image.width != 1 && this.image.height != 1) {
-			this.resize(this.image.width, this.image.height);
+			if( this.weird ) {
+				this.resize(this.image.width/4, this.image.height/4);
+			} else {
+				this.resize(this.image.width, this.image.height);
+			}
 			this.resizeImageFlag = false;
 		}
 
-		image(this.image, this.x, this.y, this.width, this.height);
+		if( this.weird ) {
+			//draw from center of box
+			image(this.image, this.width/2 + this.x, this.height/2 + this.y, this.width, this.height);
+		} else {
+			image(this.image, this.x, this.y, this.width, this.height);
+		}
+
 		if(this.tint && !this.noTint){
 			tint(this.tint)
 		} else {
@@ -259,6 +272,11 @@ class ClickableManager {
 		for( let i = 0; i < this.clickableArray.length; i++ ) {
 			this.clickableArray[i].draw();
 		}
+	}
+
+	// draw specific clickable
+	drawThis(id) {
+		this.clickableArray[id].draw();
 	}
 
 	// given a column name and cell, will get the String value associated with it
