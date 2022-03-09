@@ -1,5 +1,13 @@
-StateName,PNGFilename,ClickableName,NextState
-Splash,assets/start.png,Next,Description
-Description,assets/tech_spech.png,Next,MeetThePlayers
-MeetThePlayers,assets/meet_the_players.png,Next,Instructions
-Instructions, assets/instructions.png,Start,
+StateName,PNGFilename,ClickableName,NextState,Satisfaction,Stress,Text
+Splash,assets/start.png,Next,Description,0,0,
+Description,assets/tech_spech.png,Next,MeetThePlayers,0,0,
+MeetThePlayers,assets/meet_the_players.png,Next,Instructions,0,0,
+Instructions,assets/instructions.png,Start,Stage01,0,0,
+Stage01,assets/stage00.png,Choice1,Stage02,5,5,Artificial Intellligence
+Stage01,assets/stage00.png,Choice2,Stage02,5,1,Trained Operator
+Stage02,assets/stage01.png,Choice1,Stage03a,5,1,Public
+Stage02,assets/stage01.png,Choice2,Stage03b,5,5,Private
+Stage03a,assets/stage01.png,Choice1,Stage03b,5,1,Raise Taxes
+Stage03a,assets/stage01.png,Choice2,Stage03b,5,5,Make cutbacks
+Stage03b,assets/stage01.png,Choice1,Stage03a,5,1,Subscription
+Stage03b,assets/stage01.png,Choice2,Stage03a,5,5,Pay on Demand

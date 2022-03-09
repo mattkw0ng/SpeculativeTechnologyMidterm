@@ -12,6 +12,8 @@ var clickablesManagerEx;           // second manager for non state buttons
 var clickables;                    // an array of clickable objects
 var clickablesEx;
 
+var scoreManager;
+
 var currentStateName = "";
 var stateImage;
 
@@ -24,6 +26,7 @@ var bodyFont;
 var playerNames = [];
 var playerDescriptions = [];
 var playerIndex = 0;
+var choiceIndex = 2;
 
 // PNG filenames
 var unselectedPNGs = ["assets/player_icons/ceo_unselected.png", "assets/player_icons/mayor_unselected.png", "assets/player_icons/martha_unselected.png", "assets/player_icons/chief_unselected.png", "assets/player_icons/mike_unselected.png"];
@@ -44,6 +47,8 @@ function preload() {
   clickablesManager = new ClickableManager('data/clickableLayout.csv');
   clickablesManagerEx = new ClickableManager('data/clickableLayoutExtra.csv');
   complexStateMachine = new ComplexStateMachine("data/interactionTable.csv", "data/clickableLayout.csv");
+  scoreManager = new ScoreManager();
+
   for ( let i = 0 ; i < selectedPNGs.length ; i ++) {
     loadedPNGs.push(loadImage(unselectedPNGs[i]));
     loadedPNGs.push(loadImage(selectedPNGs[i]));
@@ -81,11 +86,95 @@ function draw() {
   drawUI();
 }
 
+// ======================== DRAWING CODE ======================== //
+
+function drawBackground() {
+  background(color(bkColor));
+}
+
+function drawImage(img) {
+  if( img !== undefined ) {
+    image(img, width/2, height/2, width, height);
+  }  
+}
+
+function drawOther() {
+   // Draw mood — if not on Splash or Instructions screen  
+  if( currentStateName == "Splash") {
+    drawSplash();  
+  } else if (currentStateName === "Description") {
+    drawDescription();
+  } else if (currentStateName === "MeetThePlayers") {
+    drawPlayers();
+  } else if (currentStateName === "Instructions") {
+    drawInstructions();
+  } else if (currentStateName.startsWith("Stage")) {
+    drawStage();
+  } else if (currentStateName === "End") {
+    drawEnd();
+  }
+}
+
+// ------------ DRAW STATES --------------
+
+function drawSplash() {
+  // do nothing yet
+}
+
+function drawDescription() {
+  writeTextInBox("Rescue Aid Drones:", "Drones designed to help in the recovery of people from any dangerous situations that require immediate evacuation/rescue. The purpose of these drones is not to rescue the person itself, but rather to assist a rescue operation so that it can go as smoothly as possible.")
+}
+
+function addPlayers() {
+  // write player data to arrays
+  playerNames = ["RADtech CEO", "Mayor of LA", "Martha (Retired Schoolteacher)", "Fire Chief", "Mike (Construction Worker)"];
+  playerDescriptions.push("This is the brilliant young woman who designed and manufactures these Rescue Aid Drones (hence the name RADtech). She wants to help people with her invention, but she is mainly focused on making money to fund her many other business ventures.");
+  playerDescriptions.push("The mayor comes from a wealthy background and has been criticized for favoring the upper class in all of his major decisions during his term. However, being 61 years old himself, he is also very mindful of the elderly population living in his city.");
+
+}
+
+function drawPlayers() {
+  exHoverEnable = true;
+
+  let titleBuf = playerNames[playerIndex] + ":";
+  let stringBuf = playerDescriptions[playerIndex];
+  writeTextInBox(titleBuf, stringBuf);
+
+}
+
+function drawInstructions() {
+  exHoverEnable = false;
+  exDefaultState = true;
+  scoreManager.drawScore(930, 185);
+
+}
+
+function drawStage() {
+  console.log("drawStage()");
+  // get choices from state
+  let choices = complexStateMachine.getState(currentStateName).texts;
+  writeChoices(choices[0], choices[1]);
+
+  complexStateMachine.scoreManager.drawScore(618,116);
+}
+
+function drawEnd() {
+  console.log("drawEnd()");
+}
+
+//-- right now, it is just the clickables
+function drawUI() {
+  clickablesManager.draw();
+  if( currentStateName !== "Splash") {
+    clickablesManagerEx.draw();
+  }
+}
+
 // ======================== Clickables ======================== //
 
 function setupClickables() {
   // All clickables to have same effects
-  for( let i = 0; i < clickables.length; i++ ) {
+  for( let i = 0; i < 2; i++ ) {
     clickables[i].onHover = clickableButtonHover;
     clickables[i].onOutside = clickableButtonOnOutside;
     clickables[i].onPress = clickableButtonPressed;
@@ -94,6 +183,15 @@ function setupClickables() {
     clickables[i].width = 250;
     clickables[i].textFont = bodyFont;
     clickables[i].noFill = true;
+  }
+  for( let i = 2 ; i < 4 ; i++) {
+    clickables[i].onHover = choiceHover;
+    clickables[i].onOutside = choiceOnOutside;
+    clickables[i].onPress = clickableButtonPressed;
+    clickables[i].color = "#82809E";
+    // clickables[i].onPress = choicePressed;
+    clickables[i].width = 42;
+    clickables[i].height = 42;
   }
 
   for( let i = 0; i < clickablesEx.length; i++ ) {
@@ -119,7 +217,8 @@ clickableButtonHover = function () {
   }
 }
 
-// color a light gray if off
+// Continue button handlers
+
 clickableButtonOnOutside = function () {
   // backto our gray color
   if (currentStateName === "Splash") {
@@ -136,6 +235,23 @@ clickableButtonOnOutside = function () {
 clickableButtonPressed = function() {
   complexStateMachine.clickablePressed(this.name);
 }
+
+// Choice button handlers
+
+choiceHover = function() {
+  choiceIndex = this.id;
+  this.color = "#FFFFFF";
+}
+
+choiceOnOutside = function() {
+  if ( this.id == choiceIndex) {
+    this.color = "#FFFFFF";
+  } else {
+    this.color = "#82809E";
+  }
+}
+
+// Extra button handlers (for player icons)
 
 exButtonOnOutside = function () {
   let exId = this.id * 3;
@@ -175,82 +291,6 @@ function stateChanged(newStateName) {
     console.log(currentStateName);
 } 
 
-// ======================== DRAWING CODE ======================== //
-
-function drawBackground() {
-  background(color(bkColor));
-}
-
-function drawImage(img) {
-  if( img !== undefined ) {
-    image(img, width/2, height/2, width, height);
-  }  
-}
-
-function drawOther() {
-   // Draw mood — if not on Splash or Instructions screen  
-  if( currentStateName == "Splash") {
-    drawSplash();  
-  } else if (currentStateName === "Description") {
-    drawDescription();
-  } else if (currentStateName === "MeetThePlayers") {
-    drawPlayers();
-  } else if (currentStateName === "Instructions") {
-    drawInstructions();
-  } else if (currentStateName === "Stage") {
-    drawStage();
-  } else if (currentStateName === "End") {
-    drawEnd();
-  }
-}
-
-// ------------ DRAW STATES --------------
-
-function drawSplash() {
-  // do nothing yet
-}
-
-function drawDescription() {
-  clickablesManagerEx.draw();
-  writeTextInBox("Rescue Aid Drones:", "Drones designed to help in the recovery of people from any dangerous situations that require immediate evacuation/rescue. The purpose of these drones is not to rescue the person itself, but rather to assist a rescue operation so that it can go as smoothly as possible.")
-}
-
-function addPlayers() {
-  // write player data to arrays
-  playerNames = ["RADtech CEO", "Mayor of LA", "Martha (Retired Schoolteacher)", "Fire Chief", "Mike (Construction Worker)"];
-  playerDescriptions.push("This is the brilliant young woman who designed and manufactures these Rescue Aid Drones (hence the name RADtech). She wants to help people with her invention, but she is mainly focused on making money to fund her many other business ventures.");
-  playerDescriptions.push("The mayor comes from a wealthy background and has been criticized for favoring the upper class in all of his major decisions during his term. However, being 61 years old himself, he is also very mindful of the elderly population living in his city.");
-
-}
-
-function drawPlayers() {
-  exHoverEnable = true;
-
-  let titleBuf = playerNames[playerIndex] + ":";
-  let stringBuf = playerDescriptions[playerIndex];
-  clickablesManagerEx.draw();
-  writeTextInBox(titleBuf, stringBuf);
-}
-
-function drawInstructions() {
-  exHoverEnable = false;
-  exDefaultState = true;
-  clickablesManagerEx.draw();
-}
-
-function drawStage() {
-  console.log("drawStage()");
-}
-
-function drawEnd() {
-  console.log("drawEnd()");
-}
-
-//-- right now, it is just the clickables
-function drawUI() {
-  clickablesManager.draw();
-}
-
 // ======================== HELPER FUNCTIONS ======================== //
 
 function writeTextInBox(titleBuf, stringBuf) {
@@ -263,4 +303,33 @@ function writeTextInBox(titleBuf, stringBuf) {
   textFont(bodyFont);
   text(stringBuf, 280, 340, 1000, 400);
   pop();
+}
+
+function writeInstructions() {
+  push();
+  fill("#EAEAEA");
+  textSize(36);
+  textFont(titleFont);
+  text(titleBuf, 280, 280, 1000, 50);
+  textSize(34);
+  textFont(bodyFont);
+  text(stringBuf, 280, 340, 1000, 400);
+  pop();
+}
+
+function writeChoices(choice1, choice2) {
+  let colors = ["#FFFFFF", "#82809E"];
+  if( choiceIndex == 3 ) {
+    colors = ["#82809E", "#FFFFFF"];
+  }
+  push();
+  textFont(bodyFont);
+  textSize(24);
+  textAlign(RIGHT);
+  fill(colors[0]);
+  text(choice1,900, 590, 380, 25);
+  fill(colors[1]);
+  text(choice2,900, 650, 380, 25);
+  pop();
+
 }
