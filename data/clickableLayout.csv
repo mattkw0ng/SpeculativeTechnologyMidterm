@@ -1,5 +1,5 @@
 ID,Name,PNGFilename,Text,x,y,visible
-0,Next,,click here to continue,610,700,yes
+0,Next,,click here to continue,575,700,yes
 1,Start,,click here to begin,1100,700,yes
 2,Restart,,Restart,1100,700,yes
 3,Choice1,,,1300,580,yes

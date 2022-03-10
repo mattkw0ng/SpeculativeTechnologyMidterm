@@ -14,12 +14,12 @@ Stage03b,assets/stage03b.png,Choice2,Stage04bb,15,15,Pay on Demand
 Stage04a,assets/stage04a.png,Choice1,Stage05a,15,5,Age Demographic
 Stage04a,assets/stage04a.png,Choice2,Stage05a,15,10,Population
 Stage04ba,assets/stage04ba.png,Choice1,Stage05b,15,0,Lower Prices
-Stage04ba,assets/stage04ba.png,Choice2,gameover02,15,25,Maintain Prices
+Stage04ba,assets/stage04ba.png,Choice2,gameover02,5,25,Maintain Prices
 Stage04bb,assets/stage04bb.png,Choice1,Stage05b,15,0,Lower Prices
-Stage04bb,assets/stage04bb.png,Choice2,gameover01,15,25,Maintain Prices
+Stage04bb,assets/stage04bb.png,Choice2,gameover01,5,25,Maintain Prices
 Stage05a,assets/stage05a.png,Choice1,ending00,15,10,Redistribute
 Stage05a,assets/stage05a.png,Choice2,ending00,15,5,Leave Them Alone
-Stage05b,assets/stage05b.png,Choice1,gameover03,15,25,Cut the Team
+Stage05b,assets/stage05b.png,Choice1,gameover03,5,25,Cut the Team
 Stage05b,assets/stage05b.png,Choice2,ending01,15,5,Lower Paycheck
 ending00,assets/ending00.png,Restart,Splash,0,0,
 ending01,assets/ending01.png,Restart,Splash,0,0,

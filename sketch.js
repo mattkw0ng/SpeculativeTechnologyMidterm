@@ -144,7 +144,7 @@ function drawSplash() {
 }
 
 function drawDescription() {
-  writeTextInBox("Rescue Aid Drones:", "Drones designed to help in the recovery of people from any dangerous situations that require immediate evacuation/rescue. The purpose of these drones is not to rescue the person itself, but rather to assist a rescue operation so that it can go as smoothly as possible.")
+  //writeTextInBox("Rescue Aid Drones:", "Drones designed to help in the recovery of people from any dangerous situations that require immediate evacuation/rescue. The purpose of these drones is not to rescue the person itself, but rather to assist a rescue operation so that it can go as smoothly as possible.")
 }
 
 function addPlayers() {
@@ -219,7 +219,7 @@ function setupClickables() {
     clickables[i].onPress = clickableButtonPressed;
     clickables[i].strokeWeight = 0;
     clickables[i].textSize = 24;
-    clickables[i].width = 250;
+    clickables[i].width = 320;
     clickables[i].textFont = bodyFont;
     clickables[i].noFill = true;
   }
@@ -246,9 +246,9 @@ function setupClickables() {
 
 // tint when mouse is over
 clickableButtonHover = function () {
-  // if (this.id === 0) {
-  //   this.textColor = "#007BFF"
-  // }
+  if (this.id === 0) {
+    this.textColor = "#007BFF"
+  }
 
   if (this.y > 697) {
     this.y -= animateSpeed;
