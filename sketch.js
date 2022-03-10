@@ -17,7 +17,7 @@ var scoreManager;
 var currentStateName = "";
 var stateImage;
 
-var bkColor = '#031927';
+var bkColor = '#05003D';
 var textColor = '#E9D6EC';
 
 var titleFont;
@@ -26,7 +26,7 @@ var bodyFont;
 var playerNames = [];
 var playerDescriptions = [];
 var playerIndex = 0;
-var choiceIndex = 2;
+var choiceIndex = 3;
 
 // PNG filenames
 var unselectedPNGs = ["assets/player_icons/ceo_unselected.png", "assets/player_icons/mayor_unselected.png", "assets/player_icons/martha_unselected.png", "assets/player_icons/chief_unselected.png", "assets/player_icons/mike_unselected.png"];
@@ -39,6 +39,10 @@ var loadedPNGs = [];
 var exHoverEnable = false;
 var exDefaultState = false;
 var animateSpeed = 1;
+var droneAnimateSpeed = 0.5;
+var droneY = 0;
+var droneUp = true;
+var droneUpAway = false;
 
 
 // ======================== SETUP ======================== //
@@ -54,6 +58,8 @@ function preload() {
     loadedPNGs.push(loadImage(selectedPNGs[i]));
     loadedPNGs.push(loadImage(defaultPNGs[i]));
   }
+
+  loadedPNGs.push(loadImage("assets/drone_gray.png"));
 
   titleFont = loadFont("assets/fonts/ocrastd.otf");
   bodyFont = loadFont("assets/fonts/courier-std-med.otf");
@@ -110,15 +116,31 @@ function drawOther() {
     drawInstructions();
   } else if (currentStateName.startsWith("Stage")) {
     drawStage();
-  } else if (currentStateName === "End") {
+  } else if (currentStateName.startsWith("ending")) {
     drawEnd();
+  } else {
+    drawGameOver();
   }
 }
 
 // ------------ DRAW STATES --------------
 
 function drawSplash() {
-  // do nothing yet
+  // animate drone up and down
+  let img = loadedPNGs[loadedPNGs.length-1];
+  if (droneY > 20) {
+    droneUp = false;
+  } else if (droneY < 0) {
+    droneUp = true;
+  }
+
+  if (droneUp || droneUpAway) {
+    droneY += droneAnimateSpeed;
+  } else {
+    droneY -= droneAnimateSpeed;
+  }
+
+  image(img, width/2, (height/2) - droneY, img.width/4, img.height/4);
 }
 
 function drawDescription() {
@@ -127,10 +149,12 @@ function drawDescription() {
 
 function addPlayers() {
   // write player data to arrays
-  playerNames = ["RADtech CEO", "Mayor of LA", "Martha (Retired Schoolteacher)", "Fire Chief", "Mike (Construction Worker)"];
-  playerDescriptions.push("This is the brilliant young woman who designed and manufactures these Rescue Aid Drones (hence the name RADtech). She wants to help people with her invention, but she is mainly focused on making money to fund her many other business ventures.");
-  playerDescriptions.push("The mayor comes from a wealthy background and has been criticized for favoring the upper class in all of his major decisions during his term. However, being 61 years old himself, he is also very mindful of the elderly population living in his city.");
-
+  playerNames = ["RADtech CEO", "Mayor of LA", "Martha", "Fire Chief", "Mike"];
+  playerDescriptions.push("This is the brilliant young woman who designed and manufactures these Rescue Aid Drones (hence the name RADtech). While her invention is meant to help people, she herself is more concerned about earning a profit.");
+  playerDescriptions.push("The mayor is a people pleaser, always concerned with his public image. He loves new technology and is always trying to find ways to integrate it into society. Recently, he authorized a program to convert all of the city's buses to be self driving vehicles.");
+  playerDescriptions.push("As a retired school teacher, Martha keeps busy as she advocates for better accessibility for the elderly and disabled in her community. She herself is restricted to a wheelchair, but does not let that stop her from her campaigns.");
+  playerDescriptions.push("The Fire Chief is an old fashioned man who does not like change. He does not believe that this new drone technology is necessary, and he thinks that it will create more problems than it solves.");
+  playerDescriptions.push("Mike lives a modest life as a construction worker. Many people find him to be loud and hot-headed, not afraid to speak his mind. Due to the nature of his job, as well as his general lack of awareness, he tends to find himself in dangerous situations.");
 }
 
 function drawPlayers() {
@@ -150,7 +174,7 @@ function drawInstructions() {
 }
 
 function drawStage() {
-  console.log("drawStage()");
+  console.log("Stage");
   // get choices from state
   let choices = complexStateMachine.getState(currentStateName).texts;
   writeChoices(choices[0], choices[1]);
@@ -159,7 +183,22 @@ function drawStage() {
 }
 
 function drawEnd() {
-  console.log("drawEnd()");
+  console.log("End");
+  complexStateMachine.scoreManager.drawScore(618,116);
+  
+  // Print the total score ( satisfaction - stress )
+  push();
+  fill("#007bff");
+  textFont(titleFont);
+  textSize(30);
+  let score = complexStateMachine.getTotalScore() + "/55";
+  text(score, 665, 428, 150, 30);
+  pop();
+}
+
+function drawGameOver() {
+  console.log("Game Over");
+  complexStateMachine.scoreManager.drawScore(618,116);
 }
 
 //-- right now, it is just the clickables
@@ -174,7 +213,7 @@ function drawUI() {
 
 function setupClickables() {
   // All clickables to have same effects
-  for( let i = 0; i < 2; i++ ) {
+  for( let i = 0; i < 3; i++ ) {
     clickables[i].onHover = clickableButtonHover;
     clickables[i].onOutside = clickableButtonOnOutside;
     clickables[i].onPress = clickableButtonPressed;
@@ -184,12 +223,11 @@ function setupClickables() {
     clickables[i].textFont = bodyFont;
     clickables[i].noFill = true;
   }
-  for( let i = 2 ; i < 4 ; i++) {
+  for( let i = 3 ; i < 5 ; i++) {
     clickables[i].onHover = choiceHover;
     clickables[i].onOutside = choiceOnOutside;
     clickables[i].onPress = clickableButtonPressed;
     clickables[i].color = "#82809E";
-    // clickables[i].onPress = choicePressed;
     clickables[i].width = 42;
     clickables[i].height = 42;
   }
@@ -208,9 +246,9 @@ function setupClickables() {
 
 // tint when mouse is over
 clickableButtonHover = function () {
-  if (this.id < 2) {
-    this.textColor = "#007BFF"
-  }
+  // if (this.id === 0) {
+  //   this.textColor = "#007BFF"
+  // }
 
   if (this.y > 697) {
     this.y -= animateSpeed;
@@ -233,7 +271,18 @@ clickableButtonOnOutside = function () {
 }
 
 clickableButtonPressed = function() {
-  complexStateMachine.clickablePressed(this.name);
+  if(currentStateName == "Splash") {
+    droneAnimateSpeed *= 20;
+    droneUpAway = true;
+    setTimeout(() => {
+      droneAnimateSpeed /= 20;
+      droneUpAway = false;
+      droneY = 0;
+      complexStateMachine.clickablePressed(this.name);
+    }, 800);
+  } else {
+    complexStateMachine.clickablePressed(this.name);
+  }
 }
 
 // Choice button handlers
@@ -319,7 +368,7 @@ function writeInstructions() {
 
 function writeChoices(choice1, choice2) {
   let colors = ["#FFFFFF", "#82809E"];
-  if( choiceIndex == 3 ) {
+  if( choiceIndex == 4 ) {
     colors = ["#82809E", "#FFFFFF"];
   }
   push();

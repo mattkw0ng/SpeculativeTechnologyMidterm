@@ -3,11 +3,26 @@ Splash,assets/start.png,Next,Description,0,0,
 Description,assets/tech_spech.png,Next,MeetThePlayers,0,0,
 MeetThePlayers,assets/meet_the_players.png,Next,Instructions,0,0,
 Instructions,assets/instructions.png,Start,Stage01,0,0,
-Stage01,assets/stage00.png,Choice1,Stage02,5,5,Artificial Intellligence
-Stage01,assets/stage00.png,Choice2,Stage02,5,1,Trained Operator
-Stage02,assets/stage01.png,Choice1,Stage03a,5,1,Public
-Stage02,assets/stage01.png,Choice2,Stage03b,5,5,Private
-Stage03a,assets/stage01.png,Choice1,Stage03b,5,1,Raise Taxes
-Stage03a,assets/stage01.png,Choice2,Stage03b,5,5,Make cutbacks
-Stage03b,assets/stage01.png,Choice1,Stage03a,5,1,Subscription
-Stage03b,assets/stage01.png,Choice2,Stage03a,5,5,Pay on Demand
+Stage01,assets/stage01.png,Choice1,Stage02,15,15,Artificial Intellligence
+Stage01,assets/stage01.png,Choice2,Stage02,15,5,Trained Operator
+Stage02,assets/stage02.png,Choice1,Stage03a,15,5,Public
+Stage02,assets/stage02.png,Choice2,Stage03b,10,15,Private
+Stage03a,assets/stage03a.png,Choice1,Stage04a,15,20,Raise Taxes
+Stage03a,assets/stage03a.png,Choice2,Stage04a,15,10,Make cutbacks
+Stage03b,assets/stage03b.png,Choice1,Stage04ba,15,5,Subscription
+Stage03b,assets/stage03b.png,Choice2,Stage04bb,15,15,Pay on Demand
+Stage04a,assets/stage04a.png,Choice1,Stage05a,15,5,Age Demographic
+Stage04a,assets/stage04a.png,Choice2,Stage05a,15,10,Population
+Stage04ba,assets/stage04ba.png,Choice1,Stage05b,15,0,Lower Prices
+Stage04ba,assets/stage04ba.png,Choice2,gameover02,15,25,Maintain Prices
+Stage04bb,assets/stage04bb.png,Choice1,Stage05b,15,0,Lower Prices
+Stage04bb,assets/stage04bb.png,Choice2,gameover01,15,25,Maintain Prices
+Stage05a,assets/stage05a.png,Choice1,ending00,15,10,Redistribute
+Stage05a,assets/stage05a.png,Choice2,ending00,15,5,Leave Them Alone
+Stage05b,assets/stage05b.png,Choice1,gameover03,15,25,Cut the Team
+Stage05b,assets/stage05b.png,Choice2,ending01,15,5,Lower Paycheck
+ending00,assets/ending00.png,Restart,Splash,0,0,
+ending01,assets/ending01.png,Restart,Splash,0,0,
+gameover01,assets/gameover01.png,Restart,Splash,0,0,
+gameover02,assets/gameover02.png,Restart,Splash,0,0,
+gameover03,assets/gameover03.png,Restart,Splash,0,0,

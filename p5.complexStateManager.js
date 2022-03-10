@@ -123,8 +123,14 @@ class ComplexStateMachine {
     }
 
     getState(stateName) {
-        let index = this.stateNames.indexOf(stateName); 
+        let index = this.stateNames.indexOf(stateName);  
         return this.states[index];
+    }
+
+    getTotalScore() {
+        let score = (this.scoreManager.satisfaction - this.scoreManager.stress) * 100;
+        console.log(score);
+        return Math.round(score);
     }
 
     // set new state, make callbacks
